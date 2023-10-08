@@ -1,8 +1,36 @@
+'use client'
 import Link from "next/link";
 import { FaFacebookF, FaLock } from 'react-icons/fa'; 
 import {AiOutlineUserAdd} from 'react-icons/ai'// Import the desired icons from react-icons library
 import {BiArrowBack} from 'react-icons/bi'
+import { useState } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function Page() {
+
+const [name, setname] = useState('')
+const [email, setEmail] = useState('')
+const [password, setPassword] = useState('')
+
+const handelRegister = (e) =>{
+     event.preventDefault()
+     console.log(name, email, password);
+
+     const auth = getAuth();
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+
+}
+
+
   return (
     <>
       <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css" />
@@ -13,7 +41,7 @@ export default function Page() {
           <div className="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">Register  Account</div>
        
           <div className="mt-10">
-            <form action="#">
+            <form onSubmit={handelRegister}>
               <div className="flex flex-col mb-6">
                 <label htmlFor="email" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">Full Name:</label>
                 <div className="relative">
@@ -26,6 +54,7 @@ export default function Page() {
                     name="name"
                     className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="full name"
+                    onChange={(e)=>setname(e.target.value)}
                   />
                 </div>
               </div>
@@ -41,6 +70,8 @@ export default function Page() {
                     name="email"
                     className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="E-Mail Address"
+                    onChange={(e)=>setEmail(e.target.value)}
+
                   />
                 </div>
               </div>
@@ -56,6 +87,8 @@ export default function Page() {
                     name="password"
                     className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Password"
+                    onChange={(e)=>setPassword(e.target.value)}
+
                   />
                 </div>
               </div>
